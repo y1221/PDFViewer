@@ -59,8 +59,8 @@
                     
                     <!--1行目-->
                     <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button x:Name="btnPrev" Content="&lt;前へ" Margin="0,0,5,0"/>
-                        <Button x:Name="btnNext" Content="次へ&gt;"/>
+                        <Button x:Name="btnPrev" Content="&lt;前へ" Margin="0,0,5,0" Click="btnPrev_Click"/>
+                        <Button x:Name="btnNext" Content="次へ&gt;" Click="btnNext_Click"/>
                     </StackPanel>
                     
                     <!--2行目-->

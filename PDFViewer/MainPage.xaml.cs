@@ -28,7 +28,10 @@ namespace PDFViewer
     public sealed partial class MainPage : Page
     {
         private PdfDocument _pdfDocument = null;
+        // 表示中のページ番号
         private uint _pageIndex = 0;
+        // ページ総数
+        private uint _pageCount = 0;
 
         public MainPage()
         {
@@ -56,6 +59,19 @@ namespace PDFViewer
 
                     // PDFファイルを読み込む
                     _pdfDocument = await PdfDocument.LoadFromFileAsync(file);
+
+                    // 前へボタンを非活性にする
+                    btnPrev.IsEnabled = false;
+
+                    // ページ数を取得
+                    _pageCount = _pdfDocument.PageCount;
+
+                    // 1ページ以下の場合次へボタンを非活性にする
+                    if (_pageCount <= 1)
+                    {
+                        btnNext.IsEnabled = false;
+                    }
+
                     ShowPdf();
                 }
                 catch (Exception ex)
@@ -99,6 +115,42 @@ namespace PDFViewer
 
                 progressRing.Visibility = Visibility.Collapsed;
             }
+        }
+
+        // ********************
+        // 「前へ」ボタン押下処理
+        // ********************
+        private void btnPrev_Click(object sender, RoutedEventArgs e)
+        {
+            _pageIndex--;
+
+            btnNext.IsEnabled = true;
+
+            // 先頭ページに達した場合
+            if (_pageIndex == 0)
+            {
+                btnPrev.IsEnabled = false;
+            }
+
+            ShowPdf();
+        }
+
+        // ********************
+        // 「次へ」ボタン押下処理
+        // ********************
+        private void btnNext_Click(object sender, RoutedEventArgs e)
+        {
+            _pageIndex++;
+
+            btnPrev.IsEnabled = true;
+
+            // 最終ページに達した場合
+            if (_pageIndex == (_pageCount - 1))
+            {
+                btnNext.IsEnabled = false;
+            }
+
+            ShowPdf();
         }
     }
 }
